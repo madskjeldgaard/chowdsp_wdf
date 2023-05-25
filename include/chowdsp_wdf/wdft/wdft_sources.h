@@ -32,14 +32,14 @@ namespace wdft
         /** Propogates a reflected wave from a WDF ideal voltage source. */
         inline T reflected() noexcept
         {
-            wdf.b = -wdf.a + (T) 2.0 * Vs;
+            wdf.b = -wdf.a + static_cast<T>( 2.0 * Vs);
             return wdf.b;
         }
 
         WDFMembers<T> wdf;
 
     private:
-        T Vs = (T) 0.0;
+        T Vs = static_cast<T>( 0.0);
     };
 
     /** WDF Voltage source with series resistance */
@@ -71,7 +71,7 @@ namespace wdft
         inline void calcImpedance() override
         {
             wdf.R = R_value;
-            wdf.G = (T) 1.0 / wdf.R;
+            wdf.G = static_cast<T>( 1.0 / wdf.R);
         }
 
         /** Sets the voltage of the voltage source, in Volts */
@@ -93,8 +93,8 @@ namespace wdft
         WDFMembers<T> wdf;
 
     private:
-        T Vs = (T) 0.0;
-        T R_value = (T) 1.0e-9;
+        T Vs = static_cast<T>( 0.0);
+        T R_value = static_cast<T>( 1.0e-9);
     };
 
     /** WDF Current source (non-adaptable) */
@@ -110,7 +110,7 @@ namespace wdft
 
         inline void calcImpedance() override
         {
-            twoR = (T) 2.0 * next.wdf.R;
+            twoR = static_cast<T>( 2.0 * next.wdf.R);
             twoR_Is = twoR * Is;
         }
 
@@ -139,7 +139,7 @@ namespace wdft
     private:
         const Next& next;
 
-        T Is = (T) 0.0;
+        T Is = static_cast<T>( 0.0);
         T twoR;
         T twoR_Is;
     };
@@ -173,7 +173,7 @@ namespace wdft
         inline void calcImpedance() override
         {
             wdf.R = R_value;
-            wdf.G = (T) 1.0 / wdf.R;
+            wdf.G = static_cast<T>( 1.0 / wdf.R);
         }
 
         /** Sets the current of the current source, in Amps */
@@ -195,8 +195,8 @@ namespace wdft
         WDFMembers<T> wdf;
 
     private:
-        T Is = (T) 0.0;
-        T R_value = (T) 1.0e9;
+        T Is = static_cast<T>( 0.0);
+        T R_value = static_cast<T>( 1.0e9);
     };
 
     /** WDF Resistor and Capacitor and Voltage source in Series */
@@ -209,10 +209,10 @@ namespace wdft
          * @param res_value: Capacitance value in Farads
          * @param fs: WDF sample rate
          */
-        explicit ResistiveCapacitiveVoltageSourceT (T res_value, T cap_value, T fs = (T) 48000.0)
+        explicit ResistiveCapacitiveVoltageSourceT (T res_value, T cap_value, T fs = static_cast<T>( 48000.0))
             : R_value (res_value),
               C_value (cap_value),
-              tt ((T) 1 / fs)
+              tt (static_cast<T>( 1 / fs))
         {
             calcImpedance();
             reset();
@@ -221,7 +221,7 @@ namespace wdft
         /** Prepares the capacitor to operate at a new sample rate */
         void prepare (T sampleRate)
         {
-            tt = (T) 1 / sampleRate;
+            tt = static_cast<T>( 1 / sampleRate);
             propagateImpedanceChange();
 
             reset();
@@ -259,9 +259,9 @@ namespace wdft
         /** Computes the impedance of the WDF resistor/capacitor combination */
         inline void calcImpedance() override
         {
-            wdf.R = tt / ((T) 2.0 * C_value) + R_value;
-            wdf.G = (T) 1.0 / wdf.R;
-            T_over_2RC = tt / ((T) 2 * C_value * R_value);
+            wdf.R = tt / (static_cast<T>( 2.0 * C_value) + R_value);
+            wdf.G = static_cast<T>( 1.0 / wdf.R);
+            T_over_2RC = tt / (static_cast<T>( 2 * C_value * R_value));
         }
 
         /** Accepts an incident wave into the WDF. */
@@ -281,13 +281,13 @@ namespace wdft
         WDFMembers<T> wdf;
 
     private:
-        T Vs = (T) 0.0;
-        T R_value = (T) 1.0e3;
-        T C_value = (T) 1.0e-6;
+        T Vs = static_cast<T>( 0.0);
+        T R_value = static_cast<T>( 1.0e3);
+        T C_value = static_cast<T>( 1.0e-6);
 
-        T T_over_2RC = (T) 0.0;
+        T T_over_2RC = static_cast<T>( 0.0);
 
-        T z = (T) 0.0;
+        T z = static_cast<T>( 0.0);
 
         T tt;
     };

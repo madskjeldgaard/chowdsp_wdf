@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * 
+ *
  * NOTE: code has been modified significantly by Jatin Chowdhury
  */
 
@@ -67,10 +67,10 @@ namespace Omega
     template <typename T>
     constexpr T log2_approx (T x)
     {
-        constexpr auto alpha = (T) 0.1640425613334452;
-        constexpr auto beta = (T) -1.098865286222744;
-        constexpr auto gamma = (T) 3.148297929334117;
-        constexpr auto zeta = (T) -2.213475204444817;
+        constexpr auto alpha = static_cast<T>( 0.1640425613334452);
+        constexpr auto beta = static_cast<T>( -1.098865286222744);
+        constexpr auto gamma = static_cast<T>( 3.148297929334117);
+        constexpr auto zeta = static_cast<T>( -2.213475204444817);
 
         return estrin<3> ({ alpha, beta, gamma, zeta }, x);
     }
@@ -80,10 +80,10 @@ namespace Omega
     template <typename T>
     inline xsimd::batch<T> log2_approx (const xsimd::batch<T>& x)
     {
-        static constexpr auto alpha = (NumericType<T>) 0.1640425613334452;
-        static constexpr auto beta = (NumericType<T>) -1.098865286222744;
-        static constexpr auto gamma = (NumericType<T>) 3.148297929334117;
-        static constexpr auto zeta = (NumericType<T>) -2.213475204444817;
+        static constexpr auto alpha = static_cast<NumericType<T>>( 0.1640425613334452);
+        static constexpr auto beta = static_cast<NumericType<T>>( -1.098865286222744);
+        static constexpr auto gamma = static_cast<NumericType<T>>( 3.148297929334117);
+        static constexpr auto zeta = static_cast<NumericType<T>>( -2.213475204444817);
 
         return estrin<3> ({ alpha, beta, gamma, zeta }, x);
     }
@@ -107,7 +107,7 @@ namespace Omega
         int32_t e = (ex >> 23) - 127;
         v.i = (v.i - ex) | 0x3f800000;
 
-        return 0.693147180559945f * ((float) e + log2_approx<float> (v.f));
+        return 0.693147180559945f * (static_cast<float>( e + log2_approx<float> (v.f)));
     }
 
     /** approximation for log(x) (64-bit) */
@@ -124,7 +124,7 @@ namespace Omega
         int64_t e = (ex >> 53) - 510;
         v.i = (v.i - ex) | 0x3ff0000000000000;
 
-        return 0.693147180559945 * ((double) e + log2_approx<double> (v.d));
+        return 0.693147180559945 * (static_cast<double>( e + log2_approx<double> (v.d)));
     }
 
 #if defined(XSIMD_HPP)
@@ -167,10 +167,10 @@ namespace Omega
     template <typename T>
     constexpr T pow2_approx (T x)
     {
-        constexpr auto alpha = (T) 0.07944154167983575;
-        constexpr auto beta = (T) 0.2274112777602189;
-        constexpr auto gamma = (T) 0.6931471805599453;
-        constexpr auto zeta = (T) 1.0;
+        constexpr auto alpha = static_cast<T>( 0.07944154167983575);
+        constexpr auto beta = static_cast<T>( 0.2274112777602189);
+        constexpr auto gamma = static_cast<T>( 0.6931471805599453);
+        constexpr auto zeta = static_cast<T>( 1.0);
 
         return estrin<3> ({ alpha, beta, gamma, zeta }, x);
     }
@@ -179,10 +179,10 @@ namespace Omega
     template <typename T>
     inline xsimd::batch<T> pow2_approx (const xsimd::batch<T>& x)
     {
-        static constexpr auto alpha = (NumericType<T>) 0.07944154167983575;
-        static constexpr auto beta = (NumericType<T>) 0.2274112777602189;
-        static constexpr auto gamma = (NumericType<T>) 0.6931471805599453;
-        static constexpr auto zeta = (NumericType<T>) 1.0;
+        static constexpr auto alpha = static_cast<NumericType<T>>( 0.07944154167983575);
+        static constexpr auto beta = static_cast<NumericType<T>>( 0.2274112777602189);
+        static constexpr auto gamma = static_cast<NumericType<T>>( 0.6931471805599453);
+        static constexpr auto zeta = static_cast<NumericType<T>>( 1.0);
 
         return estrin<3> ({ alpha, beta, gamma, zeta }, x);
     }
@@ -204,9 +204,9 @@ namespace Omega
             float f;
         } v {};
 
-        auto xi = (int32_t) x;
+        auto xi = static_cast<int32_t>( x);
         int32_t l = x < 0.0f ? xi - 1 : xi;
-        float f = x - (float) l;
+        float f = x - static_cast<float>( l);
         v.i = (l + 127) << 23;
 
         return v.f * pow2_approx<float> (f);
@@ -224,9 +224,9 @@ namespace Omega
             double d;
         } v {};
 
-        auto xi = (int64_t) x;
+        auto xi = static_cast<int64_t>( x);
         int64_t l = x < 0.0 ? xi - 1 : xi;
-        double d = x - (double) l;
+        double d = x - static_cast<double>( l);
         v.i = (l + 1023) << 52;
 
         return v.d * pow2_approx<double> (d);
@@ -283,35 +283,35 @@ namespace Omega
 #endif
         using std::max;
 
-        return max (x, (T) 0);
+        return max (x, static_cast<T>( 0));
     }
 
     /** Second-order approximation of the Wright Omega functions */
     template <typename T>
     constexpr T omega2 (T x)
     {
-        constexpr auto x1 = (NumericType<T>) -3.684303659906469;
-        constexpr auto x2 = (NumericType<T>) 1.972967391708859;
-        constexpr auto a = (NumericType<T>) 9.451797158780131e-3;
-        constexpr auto b = (NumericType<T>) 1.126446405111627e-1;
-        constexpr auto c = (NumericType<T>) 4.451353886588814e-1;
-        constexpr auto d = (NumericType<T>) 5.836596684310648e-1;
+        constexpr auto x1 = static_cast<NumericType<T>>( -3.684303659906469);
+        constexpr auto x2 = static_cast<NumericType<T>>( 1.972967391708859);
+        constexpr auto a = static_cast<NumericType<T>>( 9.451797158780131e-3);
+        constexpr auto b = static_cast<NumericType<T>>( 1.126446405111627e-1);
+        constexpr auto c = static_cast<NumericType<T>>( 4.451353886588814e-1);
+        constexpr auto d = static_cast<NumericType<T>>( 5.836596684310648e-1);
 
-        return select (x < x1, (T) 0, select (x > x2, x, estrin<3> ({ a, b, c, d }, x)));
+        return select (x < x1, static_cast<T>( 0, select (x > x2, x, estrin<3> ({ a, b, c, d }, x))));
     }
 
     /** Third-order approximation of the Wright Omega functions */
     template <typename T>
     constexpr T omega3 (T x)
     {
-        constexpr auto x1 = (NumericType<T>) -3.341459552768620;
-        constexpr auto x2 = (NumericType<T>) 8.0;
-        constexpr auto a = (NumericType<T>) -1.314293149877800e-3;
-        constexpr auto b = (NumericType<T>) 4.775931364975583e-2;
-        constexpr auto c = (NumericType<T>) 3.631952663804445e-1;
-        constexpr auto d = (NumericType<T>) 6.313183464296682e-1;
+        constexpr auto x1 = static_cast<NumericType<T>>( -3.341459552768620);
+        constexpr auto x2 = static_cast<NumericType<T>>( 8.0);
+        constexpr auto a = static_cast<NumericType<T>>( -1.314293149877800e-3);
+        constexpr auto b = static_cast<NumericType<T>>( 4.775931364975583e-2);
+        constexpr auto c = static_cast<NumericType<T>>( 3.631952663804445e-1);
+        constexpr auto d = static_cast<NumericType<T>>( 6.313183464296682e-1);
 
-        return select (x < x1, (T) 0, select (x < x2, estrin<3> ({ a, b, c, d }, x), x - log_approx<T> (x)));
+        return select (x < x1, static_cast<T>( 0, select (x < x2, estrin<3> ({ a, b, c, d }, x), x - log_approx<T> (x))));
     }
 
     /** Fourth-order approximation of the Wright Omega functions */
@@ -319,7 +319,7 @@ namespace Omega
     constexpr T omega4 (T x)
     {
         const auto y = omega3<T> (x);
-        return y - (y - exp_approx<T> (x - y)) / (y + (T) 1);
+        return y - (y - exp_approx<T> (x - y)) / (y + static_cast<T>( 1));
     }
 
 } // namespace Omega

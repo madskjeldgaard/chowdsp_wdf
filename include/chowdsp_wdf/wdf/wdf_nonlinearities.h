@@ -31,8 +31,8 @@ namespace wdf
     public:
         Open() : WDF<T> ("Open")
         {
-            this->R = (T) 1.0e15;
-            this->G = (T) 1.0 / this->R;
+            this->R = static_cast<T>( 1.0e15);
+            this->G = static_cast<T>( 1.0 / this->R);
         }
 
         inline void calcImpedance() override {}
@@ -58,8 +58,8 @@ namespace wdf
     public:
         Short() : WDF<T> ("Short")
         {
-            this->R = (T) 1.0e-15;
-            this->G = (T) 1.0 / this->R;
+            this->R = static_cast<T>( 1.0e-15);
+            this->G = static_cast<T>( 1.0 / this->R);
         }
 
         inline void calcImpedance() override {}
@@ -94,7 +94,7 @@ namespace wdf
          * @param Vt: thermal voltage
          * @param nDiodes: the number of series diodes
          */
-        DiodePair (WDF<T>* next, T Is, T Vt = (NumericType<T>) 25.85e-3, T nDiodes = (T) 1) : WDFRootWrapper<T, wdft::DiodePairT<T, WDF<T>, Q>> ("DiodePair", *next, *next, Is, Vt, nDiodes)
+        DiodePair (WDF<T>* next, T Is, T Vt = static_cast<NumericType<T>>( 25.85e-3), T nDiodes = static_cast<T>( 1)) : WDFRootWrapper<T, wdft::DiodePairT<T, WDF<T>, Q>> ("DiodePair", *next, *next, Is, Vt, nDiodes)
         {
             next->connectToNode (this);
         }
@@ -122,7 +122,7 @@ namespace wdf
          * @param Vt: thermal voltage
          * @param nDiodes: the number of series diodes
          */
-        Diode (WDF<T>* next, T Is, T Vt = (NumericType<T>) 25.85e-3, T nDiodes = 1) : WDFRootWrapper<T, wdft::DiodeT<T, WDF<T>>> ("Diode", *next, *next, Is, Vt, nDiodes)
+        Diode (WDF<T>* next, T Is, T Vt = static_cast<NumericType<T>>( 25.85e-3), T nDiodes = 1) : WDFRootWrapper<T, wdft::DiodeT<T, WDF<T>>> ("Diode", *next, *next, Is, Vt, nDiodes)
         {
             next->connectToNode (this);
         }

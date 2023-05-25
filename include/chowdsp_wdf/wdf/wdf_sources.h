@@ -15,7 +15,7 @@ namespace wdf
         /** Creates a new resistive voltage source.
      * @param value: initial resistance value, in Ohms
      */
-        explicit ResistiveVoltageSource (T value = (NumericType<T>) 1.0e-9) : WDFWrapper<T, wdft::ResistiveVoltageSourceT<T>> ("Resistive Voltage", value)
+        explicit ResistiveVoltageSource (T value = static_cast<NumericType<T>>( 1.0e-9)) : WDFWrapper<T, wdft::ResistiveVoltageSourceT<T>> ("Resistive Voltage", value)
         {
         }
 
@@ -52,7 +52,7 @@ namespace wdf
         /** Creates a new resistive current source.
      * @param value: initial resistance value, in Ohms
      */
-        explicit ResistiveCurrentSource (T value = (NumericType<T>) 1.0e9) : WDFWrapper<T, wdft::ResistiveCurrentSourceT<T>> ("Resistive Current", value)
+        explicit ResistiveCurrentSource (T value = static_cast<NumericType<T>>( 1.0e9)) : WDFWrapper<T, wdft::ResistiveCurrentSourceT<T>> ("Resistive Current", value)
         {
         }
 

@@ -49,7 +49,7 @@ namespace wdft
         void calcImpedance() override
         {
             wdf.R = ImpedanceCalculator::calcImpedance (*this);
-            wdf.G = (T) 1 / wdf.R;
+            wdf.G = static_cast<T>( 1 / wdf.R);
         }
 
         constexpr auto getPortImpedances()
@@ -77,7 +77,7 @@ namespace wdft
 
             rtype_detail::RtypeScatter (S_matrix, a_vec, b_vec);
             rtype_detail::forEachInTuple ([&] (auto& port, size_t i) {
-                                              auto portIndex = getPortIndex ((int) i);
+                                              auto portIndex = getPortIndex (static_cast<int>( i));
                                               port.incident (b_vec[portIndex]); },
                                           downPorts);
         }
@@ -86,7 +86,7 @@ namespace wdft
         inline T reflected() noexcept
         {
             rtype_detail::forEachInTuple ([&] (auto& port, size_t i) {
-                                              auto portIndex = getPortIndex ((int) i);
+                                              auto portIndex = getPortIndex (static_cast<int>( i));
                                               a_vec[portIndex] = port.reflected(); },
                                           downPorts);
 

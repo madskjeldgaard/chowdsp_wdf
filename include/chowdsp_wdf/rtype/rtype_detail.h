@@ -78,11 +78,11 @@ namespace wdft
             static constexpr int size() noexcept { return arraySize; }
 
         private:
-            alignas (alignment) ElementType array[array_pad<ElementType, (size_t) arraySize>()] {};
+            alignas (alignment) ElementType array[array_pad<ElementType, static_cast<size_t>( arraySize)>()] {};
         };
 
         template <typename T, int nRows, int nCols = nRows, int alignment = CHOWDSP_WDF_DEFAULT_SIMD_ALIGNMENT>
-        using Matrix = AlignedArray<T, nRows, alignment>[(size_t) nCols];
+        using Matrix = AlignedArray<T, nRows, alignment>[static_cast<size_t>( nCols)];
 
         /** Implementation for float/double. */
         template <typename T, int numPorts>
@@ -95,7 +95,7 @@ namespace wdft
 
 #if defined(XSIMD_HPP)
             using v_type = xsimd::simd_type<T>;
-            constexpr auto simd_size = (int) v_type::size;
+            constexpr auto simd_size = static_cast<int>( v_type::size);
             constexpr auto vec_size = ceil_div (numPorts, simd_size) * simd_size;
 
             for (int c = 0; c < vec_size; c += simd_size)
@@ -162,7 +162,7 @@ namespace wdf
         template <typename ElementType>
         struct AlignedArray
         {
-            explicit AlignedArray (size_t size) : m_size ((int) size),
+            explicit AlignedArray (size_t size) : m_size (static_cast<int>( size)),
                                                   vector (array_pad<ElementType> (size), ElementType {})
             {
             }
@@ -174,7 +174,7 @@ namespace wdf
             const ElementType* data() const noexcept { return vector.data(); }
 
             void clear() { std::fill (std::begin (vector), std::end (vector), ElementType {}); }
-            int size() const noexcept { return (int) m_size; }
+            int size() const noexcept { return static_cast<int>( m_size); }
 
         private:
             const int m_size;
@@ -192,8 +192,8 @@ namespace wdf
             {
             }
 
-            AlignedArray<ElementType>& operator[] (int index) noexcept { return vector[(size_t) index]; }
-            const AlignedArray<ElementType>& operator[] (int index) const noexcept { return vector[(size_t) index]; }
+            AlignedArray<ElementType>& operator[] (int index) noexcept { return vector[static_cast<size_t>( index)]; }
+            const AlignedArray<ElementType>& operator[] (int index) const noexcept { return vector[static_cast<size_t>( index)]; }
 
         private:
             std::vector<AlignedArray<ElementType>> vector;
@@ -210,7 +210,7 @@ namespace wdf
 
 #if defined(XSIMD_HPP)
             using v_type = xsimd::simd_type<T>;
-            constexpr auto simd_size = (int) v_type::size;
+            constexpr auto simd_size = static_cast<int>( v_type::size);
             const auto numPorts = a_.size();
             const auto vec_size = ceil_div (numPorts, simd_size) * simd_size;
 

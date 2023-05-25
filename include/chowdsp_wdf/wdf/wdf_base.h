@@ -41,13 +41,13 @@ namespace wdf
         /** Probe the voltage across this circuit element. */
         inline T voltage() const noexcept
         {
-            return (wdf.a + wdf.b) / (T) 2.0;
+            return (wdf.a + wdf.b) / static_cast<T>( 2.0);
         }
 
         /**Probe the current through this circuit element. */
         inline T current() const noexcept
         {
-            return (wdf.a - wdf.b) / ((T) 2.0 * wdf.R);
+            return (wdf.a - wdf.b) / (static_cast<T>( 2.0 * wdf.R));
         }
 
         // These classes need access to a,b

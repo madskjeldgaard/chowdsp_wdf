@@ -53,24 +53,24 @@ namespace wdft
     template <typename T>
     struct WDFMembers
     {
-        T R = (NumericType<T>) 1.0e-9; /* impedance */
-        T G = (T) 1.0 / R; /* admittance */
-        T a = (T) 0.0; /* incident wave */
-        T b = (T) 0.0; /* reflected wave */
+        T R = static_cast<NumericType<T>>(1.0e-9); /* impedance */
+        T G = static_cast<T>( 1.0 / R); /* admittance */
+        T a = static_cast<T>( 0.0); /* incident wave */
+        T b = static_cast<T>( 0.0); /* reflected wave */
     };
 
     /** Probe the voltage across this circuit element. */
     template <typename T, typename WDFType>
     inline T voltage (const WDFType& wdf) noexcept
     {
-        return (wdf.wdf.a + wdf.wdf.b) * (T) 0.5;
+        return (wdf.wdf.a + wdf.wdf.b) * static_cast<T>( 0.5);
     }
 
     /**Probe the current through this circuit element. */
     template <typename T, typename WDFType>
     inline T current (const WDFType& wdf) noexcept
     {
-        return (wdf.wdf.a - wdf.wdf.b) * ((T) 0.5 * wdf.wdf.G);
+        return (wdf.wdf.a - wdf.wdf.b) * (static_cast<T>( 0.5 * wdf.wdf.G));
     }
 } // namespace wdft
 } // namespace chowdsp

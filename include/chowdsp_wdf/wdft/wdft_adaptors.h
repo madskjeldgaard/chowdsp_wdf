@@ -29,7 +29,7 @@ namespace wdft
         inline void calcImpedance() override
         {
             wdf.G = port1.wdf.G + port2.wdf.G;
-            wdf.R = (T) 1.0 / wdf.G;
+            wdf.R = static_cast<T>( 1.0 / wdf.G);
             port1Reflect = port1.wdf.G / wdf.G;
         }
 
@@ -61,8 +61,8 @@ namespace wdft
         WDFMembers<T> wdf;
 
     private:
-        T port1Reflect = (T) 1.0;
-        T bDiff = (T) 0.0;
+        T port1Reflect = static_cast<T>( 1.0);
+        T bDiff = static_cast<T>( 0.0);
     };
 
     /** WDF 3-port series adaptor */
@@ -85,7 +85,7 @@ namespace wdft
         inline void calcImpedance() override
         {
             wdf.R = port1.wdf.R + port2.wdf.R;
-            wdf.G = (T) 1.0 / wdf.R;
+            wdf.G = static_cast<T>( 1.0 / wdf.R);
             port1Reflect = port1.wdf.R / wdf.R;
         }
 
@@ -112,7 +112,7 @@ namespace wdft
         WDFMembers<T> wdf;
 
     private:
-        T port1Reflect = (T) 1.0;
+        T port1Reflect = static_cast<T>( 1.0);
     };
 
     /** WDF Voltage Polarity Inverter */
@@ -133,7 +133,7 @@ namespace wdft
         inline void calcImpedance() override
         {
             wdf.R = port1.wdf.R;
-            wdf.G = (T) 1.0 / wdf.R;
+            wdf.G = static_cast<T>( 1.0 / wdf.R);
         }
 
         /** Accepts an incident wave into a WDF inverter. */
@@ -177,15 +177,15 @@ namespace wdft
         inline void calcImpedance() override
         {
             denominator = y[1][1] + port1.wdf.R * y[0][0] * y[1][1] - port1.wdf.R * y[0][1] * y[1][0];
-            wdf.R = (port1.wdf.R * y[0][0] + (T) 1.0) / denominator;
-            wdf.G = (T) 1.0 / wdf.R;
+            wdf.R = (port1.wdf.R * y[0][0] + static_cast<T>( 1.0) / denominator);
+            wdf.G = static_cast<T>( 1.0 / wdf.R);
 
             T rSq = port1.wdf.R * port1.wdf.R;
             T num1A = -y[1][1] * rSq * y[0][0] * y[0][0];
             T num2A = y[0][1] * y[1][0] * rSq * y[0][0];
 
-            A = (num1A + num2A + y[1][1]) / (denominator * (port1.wdf.R * y[0][0] + (T) 1.0));
-            B = -port1.wdf.R * y[0][1] / (port1.wdf.R * y[0][0] + (T) 1.0);
+            A = (num1A + num2A + y[1][1]) / (denominator * (port1.wdf.R * y[0][0] + static_cast<T>( 1.0)));
+            B = -port1.wdf.R * y[0][1] / (port1.wdf.R * y[0][0] + static_cast<T>( 1.0));
             C = -y[1][0] / denominator;
         }
 
@@ -207,12 +207,12 @@ namespace wdft
 
     private:
         PortType& port1;
-        T y[2][2] = { { (T) 0.0, (T) 0.0 }, { (T) 0.0, (T) 0.0 } };
+        T y[2][2] = { { static_cast<T>(0.0), static_cast<T>(0.0) }, { static_cast<T>(0.0), static_cast<T>(0.0) } };
 
-        T denominator = (T) 1.0;
-        T A = (T) 1.0;
-        T B = (T) 1.0;
-        T C = (T) 1.0;
+        T denominator = static_cast<T>( 1.0);
+        T A = static_cast<T>( 1.0);
+        T B = static_cast<T>( 1.0);
+        T C = static_cast<T>( 1.0);
     };
 
     // useful "factory" functions so you don't have to declare all the template parameters

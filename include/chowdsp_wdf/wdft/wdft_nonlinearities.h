@@ -46,8 +46,8 @@ namespace wdft
         {
             Is = newIs;
             Vt = nDiodes * newVt;
-            twoVt = (T) 2 * Vt;
-            oneOverVt = (T) 1 / Vt;
+            twoVt = static_cast<T>( 2 * Vt);
+            oneOverVt = static_cast<T>( 1 / Vt);
             calcImpedance();
         }
 
@@ -85,8 +85,8 @@ namespace wdft
             reflectedInternal() noexcept
         {
             // See eqn (18) from reference paper
-            T lambda = (T) signum::signum (wdf.a);
-            wdf.b = wdf.a + (T) 2 * lambda * (R_Is - Vt * Omega::omega4 (logR_Is_overVt + lambda * wdf.a * oneOverVt + R_Is_overVt));
+            T lambda = static_cast<T>( signum::signum (wdf.a));
+            wdf.b = wdf.a + static_cast<T>( 2 * lambda * (R_Is - Vt * Omega::omega4 (logR_Is_overVt + lambda * wdf.a * oneOverVt + R_Is_overVt)));
         }
 
         /** Implementation for float/double (Best). */
@@ -95,7 +95,7 @@ namespace wdft
             reflectedInternal() noexcept
         {
             // See eqn (39) from reference paper
-            T lambda = (T) signum::signum (wdf.a);
+            T lambda = static_cast<T>( signum::signum (wdf.a));
             T lambda_a_over_vt = lambda * wdf.a * oneOverVt;
             wdf.b = wdf.a - twoVt * lambda * (Omega::omega4 (logR_Is_overVt + lambda_a_over_vt) - Omega::omega4 (logR_Is_overVt - lambda_a_over_vt));
         }
@@ -140,8 +140,8 @@ namespace wdft
         {
             Is = newIs;
             Vt = nDiodes * newVt;
-            twoVt = (T) 2 * Vt;
-            oneOverVt = (T) 1 / Vt;
+            twoVt = static_cast<T>( 2 * Vt);
+            oneOverVt = static_cast<T>( 1 / Vt);
             calcImpedance();
         }
 
@@ -152,7 +152,7 @@ namespace wdft
 #endif
             using std::log;
 
-            twoR_Is = (T) 2 * next.wdf.R * Is;
+            twoR_Is = static_cast<T>( 2 * next.wdf.R * Is);
             R_Is_overVt = next.wdf.R * Is * oneOverVt;
             logR_Is_overVt = log (R_Is_overVt);
         }

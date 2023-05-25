@@ -115,7 +115,7 @@ namespace wdf
         void calcImpedance() override
         {
             this->wdf.R = impedanceCalculator (*this);
-            this->wdf.G = (T) 1 / this->wdf.R;
+            this->wdf.G = static_cast<T>( 1 / this->wdf.R);
         }
 
         /** Use this function to set the scattering matrix data. */
@@ -161,7 +161,7 @@ namespace wdf
         }
 
         /** Implement this function to set the scattering matrix when an incoming impedance changes */
-        std::function<T (RtypeAdaptor&)> impedanceCalculator = [] (auto&) { return (T) 1; };
+        std::function<T (RtypeAdaptor&)> impedanceCalculator = [] (auto&) { return static_cast<T>( 1); };
 
     private:
         int getPortIndex (int vectorIndex)

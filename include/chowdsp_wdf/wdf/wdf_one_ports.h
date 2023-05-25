@@ -36,7 +36,7 @@ namespace wdf
          * @param value: Capacitance value in Farads
          * @param fs: WDF sample rate
          */
-        explicit Capacitor (T value, T fs = (T) 48000.0) : WDFWrapper<T, wdft::CapacitorT<T>> ("Capacitor", value, fs)
+        explicit Capacitor (T value, T fs = static_cast<T>(48000.0)) : WDFWrapper<T, wdft::CapacitorT<T>> ("Capacitor", value, fs)
         {
         }
 
@@ -72,7 +72,7 @@ namespace wdf
          * @param alpha: alpha value to be used for the alpha transform,
          *               use 0 for Backwards Euler, use 1 for Bilinear Transform.
          */
-        explicit CapacitorAlpha (T value, T fs = (T) 48000.0, T alpha = (T) 1.0) : WDFWrapper<T, wdft::CapacitorAlphaT<T>> ("Capacitor", value, fs, alpha)
+        explicit CapacitorAlpha (T value, T fs = static_cast<T>(48000.0), T alpha = static_cast<T>(1.0)) : WDFWrapper<T, wdft::CapacitorAlphaT<T>> ("Capacitor", value, fs, alpha)
         {
         }
 
@@ -113,7 +113,7 @@ namespace wdf
      * @param value: Inductance value in Farads
      * @param fs: WDF sample rate
      */
-        explicit Inductor (T value, T fs = (T) 48000.0) : WDFWrapper<T, wdft::InductorT<T>> ("Inductor", value, fs)
+        explicit Inductor (T value, T fs = static_cast<T>(48000.0)) : WDFWrapper<T, wdft::InductorT<T>> ("Inductor", value, fs)
         {
         }
 
